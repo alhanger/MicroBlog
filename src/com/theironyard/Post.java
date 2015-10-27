@@ -5,4 +5,5 @@ package com.theironyard;
  */
 public class Post {
     String text;
+    int id;
 }

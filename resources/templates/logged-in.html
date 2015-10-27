@@ -1,0 +1,22 @@
+<html>
+<body>
+<form action="create-post" method="post">
+    <input type="text" placeholder="Write a post" name="userPost">
+    <button type="submit">Submit</button>
+</form>
+Posts by {{user}}:<br>
+{{#posts}}
+{{id}}. {{text}}<br>
+{{/posts}}
+<br>
+<br>
+<form action="delete-post" method="post">
+    <input type="number" placeholder="Post #" name="postid" />
+    <button type="submit">Delete Post</button>
+</form>
+<br>
+<form action="logout" method="post">
+    <button type="submit">Logout</button>
+</form>
+</body>
+</html>
