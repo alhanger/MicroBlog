@@ -10,11 +10,15 @@ Posts by {{user}}:<br>
 {{/posts}}
 <br>
 <br>
+<form action="edit-post" method="post">
+    <input type="number" placeholder="Post #" name="editPostId" />
+    <input type="text" placeholder="Edit Text" name="editpost" />
+    <button type="submit">Edit Post</button>
+</form>
 <form action="delete-post" method="post">
     <input type="number" placeholder="Post #" name="postid" />
     <button type="submit">Delete Post</button>
 </form>
-<br>
 <form action="logout" method="post">
     <button type="submit">Logout</button>
 </form>

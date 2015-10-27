@@ -13,6 +13,21 @@ public class Main {
     public static void main(String[] args) {
         HashMap<String, User> users = new HashMap<>();
         Spark.init();
+        Spark.get(
+                "/",
+                ((request, response) -> {
+                    Session session = request.session();
+                    String username = session.attribute("username");
+                    if (username == null) {
+                        return new ModelAndView(new HashMap(), "not-logged-in.html");
+                    }
+                    HashMap m = new HashMap();
+                    m.put("user", username);
+                    m.put("posts", users.get(username).posts);
+                    return new ModelAndView(m, "logged-in.html");
+                }),
+                new MustacheTemplateEngine()
+        );
         Spark.post(
                 "/create-user",
                 ((request, response) -> {
@@ -56,21 +71,7 @@ public class Main {
                     return "";
                 })
         );
-        Spark.get(
-                "/",
-                ((request, response) -> {
-                    Session session = request.session();
-                    String username = session.attribute("username");
-                    if (username == null) {
-                        return new ModelAndView(new HashMap(), "not-logged-in.html");
-                    }
-                    HashMap m = new HashMap();
-                    m.put("user", username);
-                    m.put("posts", users.get(username).posts);
-                    return new ModelAndView(m, "logged-in.html");
-                }),
-                new MustacheTemplateEngine()
-        );
+
         Spark.post(
                 "/logout",
                 ((request, response) -> {
@@ -95,6 +96,20 @@ public class Main {
                     } catch (Exception e) {
 
                     }
+                    response.redirect("/");
+                    return "";
+                })
+        );
+        Spark.post(
+                "/edit-post",
+                ((request, response) -> {
+                    Session session = request.session();
+                    String name = session.attribute("username");
+                    String id = request.queryParams("editPostId");
+                    String editPost = request.queryParams("editpost");
+
+                    int idNum = Integer.valueOf(id) - 1;
+                    users.get(name).posts.get(idNum).text = editPost;
                     response.redirect("/");
                     return "";
                 })
